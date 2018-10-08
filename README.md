@@ -11,7 +11,7 @@ Be able to inject the repository into the controller
 Brief
 In this lab please use what you've already learned about Spring to create an entirely new Spring application that allows you to get the details of an employee.
 
-Start from scratch using the Spring Boot Initializr.
+Start from scratch using the Spring Boot Initializr (https://start.spring.io/).
 
 ### MVP
 Create a Spring Boot application for recording employee data that has:
