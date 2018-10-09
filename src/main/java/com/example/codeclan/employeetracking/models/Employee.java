@@ -1,5 +1,6 @@
 package com.example.codeclan.employeetracking.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -29,7 +30,28 @@ public class Employee implements Serializable {
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
-    //private List<Project> projects;
+    @JsonIgnore
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @ManyToMany
+    @JoinTable(
+            name = "projects_employees",
+            joinColumns = {
+                    @JoinColumn(
+                            name = "employee_id",
+                            nullable = false,
+                            updatable = false
+                    )
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "project_id",
+                            nullable = false,
+                            updatable = false
+                    )
+            }
+    )
+
+    private List<Project> projects;
 
     public Employee(String name, int age, int employeeNumber, String email, Department department) {
         this.name = name;
@@ -37,7 +59,7 @@ public class Employee implements Serializable {
         this.employeeNumber = employeeNumber;
         this.email = email;
         this.department = department;
-        //this.projects = new ArrayList<Project>();
+        this.projects = new ArrayList<Project>();
     }
 
     public Employee(){
@@ -92,11 +114,15 @@ public class Employee implements Serializable {
         this.department = department;
     }
 
-//    public List<Project> getProjects() {
-//        return projects;
-//    }
-//
-//    public void setProjects(List<Project> projects) {
-//        this.projects = projects;
-//    }
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
+    public void addProject(Project project){
+        this.projects.add(project);
+    }
 }
